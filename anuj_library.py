@@ -1,7 +1,10 @@
 
 # Anuj Arya, Roll no. 2311031
 
-class MyClass1():
+import matplotlib.pyplot as plt
+
+# ------------------- Assignment 00 ------------------------
+class Number():
     def __init__(self):
         pass
     # Sum of first 20 odd numbers 
@@ -18,7 +21,7 @@ class MyClass1():
             return 1        
         else:
             return n * self.fact(n - 1)
-class MyClass2():
+class Series():
     def __init__(self):
         pass
     # Sum of 15 terms of a GP and HPseries for common difference 1.5 and common ratio 0.5 starting from t0 = 1.25.
@@ -36,7 +39,7 @@ class MyClass2():
         print(m)
         return sum(m)
 
-class MyClass3():
+class Matrix_Operation():
     def __init__(self):
         pass
     def read_matrix(self,filename):
@@ -83,3 +86,44 @@ class Mycomplex():
 
     def modulus(self,d1,d2):
         return (d1 ** 2 + d2 ** 2) ** 0.5
+
+# ---------------------------- Assignment 01 ----------------------
+
+class Random():
+    def __init__(self):
+        pass    
+    def random_gen(self,c,n):
+        x=[0.1]
+        for i in range(n):
+            p = c*x[i]*(1-x[i])
+            x.append(p)
+        return x
+
+    def plot(self,x, y):
+        plt.title('Map Iterations')
+        plt.xlabel('Iteration')
+        plt.ylabel('Value')
+        plt.scatter(x, y, marker='o', color='b')
+        plt.grid(True)
+        plt.show()
+
+    def slicing(self,y1,k):
+        a=[]
+        b=[]
+        for i in range(len(y1)):
+            a.append(y1[i])
+            if (i+k)<len(y1):
+                b.append(y1[i+k])
+        a = a[:-k]
+        return a,b
+
+    def LCG(self,seed,a,c,m,n):
+        rand_num =[] 
+        x=seed
+        for _ in range(n):
+            x= (a*x+c) % m
+            rand_num.append(x)
+        return rand_num
+
+# ------------------------ Assignment 02 ----------------------
+

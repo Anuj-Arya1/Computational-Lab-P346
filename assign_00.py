@@ -1,9 +1,10 @@
+# Anuj Arya, Roll no. 2311031 
 
-from MYclass_library import *
+from anuj_library import *
 
-c1 = MyClass1()
-c2 = MyClass2()
-c3 = MyClass3()
+c1 = Number()
+c2 = Series()
+c3 = Matrix_Operation()
 c4 = Mycomplex(1.3,-2.2)
 
 
