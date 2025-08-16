@@ -2,6 +2,7 @@
 # Anuj Arya, Roll no. 2311031
 
 import matplotlib.pyplot as plt
+import numpy as np
 
 # ------------------- Assignment 00 ------------------------
 class Number():
@@ -126,4 +127,38 @@ class Random():
         return rand_num
 
 # ------------------------ Assignment 02 ----------------------
+class Pi_estimation():
+    def __init__(self):
+        pass
 
+    def points_inside_circle(self,x,y):
+        count = 0
+        for i in range(len(x)):
+            if (x[i]**2 +y[i]**2) <1:
+                count +=1
+        return count
+
+    def pi_val_cal(self,total_pt):
+        x = o1.LCG(0.1,1103515245,12345,32768,total_pt)
+        y = o1.LCG(0.4,1103515245,12345,32768,total_pt)
+        for i in range(len(x)):
+            x[i] = x[i]/32768
+        for i in range(len(y)):
+            y[i] = y[i]/32768
+        inside_points = points_inside_circle(x,y)
+        pi_val = 4*(inside_points / total_pt)
+        return pi_val
+
+    def avg_pi_cal(self,pi_value):
+        pi_value = pi_value[-200:]
+        pi_sum = 0
+        for i in range(len(pi_value)):
+            pi_sum += pi_value[i]
+        avg_pi = pi_sum/len(pi_value)
+        return avg_pi
+        
+    def Exp_Rand_num(self,x):
+        y=[]
+        for i in range(len(x)):
+            y.append(-np.log(x[i]))
+        return y
