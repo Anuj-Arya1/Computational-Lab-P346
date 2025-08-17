@@ -147,10 +147,19 @@ class Plots():
         plt.scatter(x, y, marker='o', color='b')
         plt.grid(True)
         plt.show()
-        plt.savefig(f"{title}.png")
+        #plt.savefig(f"{title}.png")
 
-    def hist(self, data, title, xlabel, ylabel, bins=10):
-        plt.hist(data, bins=bins, color='b', alpha=0.7)
+    def line_plot(self,x, y,title,xlabel, ylabel):
+        plt.title(title)
+        plt.xlabel(xlabel)
+        plt.ylabel(ylabel)
+        plt.plot(x, y)
+        plt.grid(True)
+        plt.show()
+        #plt.savefig(f"{title}.png")
+
+    def hist(self, data, title, xlabel, ylabel, bins):
+        plt.hist(data, bins=bins, color='skyblue', edgecolor='black')
         plt.title(title)
         plt.xlabel(xlabel)
         plt.ylabel(ylabel)
@@ -160,7 +169,7 @@ class Plots():
 # ------------------------ Assignment 01.2 ----------------------
 class Pi_estimation():
     def __init__(self):
-        pass
+        self.rng = Random()
 
     def points_inside_circle(self,x,y):
         count = 0
@@ -170,13 +179,13 @@ class Pi_estimation():
         return count
 
     def pi_val_cal(self,total_pt):
-        x = o1.LCG(0.1,1103515245,12345,32768,total_pt)
-        y = o1.LCG(0.4,1103515245,12345,32768,total_pt)
+        x = self.rng.LCG(0.1,1103515245,12345,32768,total_pt)
+        y = self.rng.LCG(0.4,1103515245,12345,32768,total_pt)
         for i in range(len(x)):
             x[i] = x[i]/32768
         for i in range(len(y)):
             y[i] = y[i]/32768
-        inside_points = points_inside_circle(x,y)
+        inside_points = self.points_inside_circle(x,y)
         pi_val = 4*(inside_points / total_pt)
         return pi_val
 
