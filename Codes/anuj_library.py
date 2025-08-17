@@ -202,3 +202,29 @@ class Pi_estimation():
         for i in range(len(x)):
             y.append(-np.log(x[i]))
         return y
+
+# ------------------------- Assignment 02 --------------------------------------
+
+class Gauss_Jordon_Elimination():
+    def __init__(self, A, b):
+        self.A = A
+        self.b = b
+
+    # def eliminate(self):
+    #     n = len(self.A)
+    #     for i in range(n):
+    #         # Make the diagonal contain all 1's
+    #         diag = self.A[i][i]
+    #         for j in range(n):
+    #             self.A[i][j] /= diag
+    #         self.b[i] /= diag
+
+    #         # Make the other rows contain 0's in the current column
+    #         for k in range(n):
+    #             if k != i:
+    #                 factor = self.A[k][i]
+    #                 for j in range(n):
+    #                     self.A[k][j] -= factor * self.A[i][j]
+    #                 self.b[k] -= factor * self.b[i]
+
+    #     return self.b
