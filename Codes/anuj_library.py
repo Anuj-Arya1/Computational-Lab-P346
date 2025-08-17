@@ -88,27 +88,20 @@ class Mycomplex():
     def modulus(self,d1,d2):
         return (d1 ** 2 + d2 ** 2) ** 0.5
 
-# ---------------------------- Assignment 01 ----------------------
+# ---------------------------- Assignment 01.1 ----------------------
 
 class Random():
     def __init__(self):
         pass    
-    def random_gen(self,c,n):
+    def pRNG(self,c,n):
         x=[0.1]
         for i in range(n):
             p = c*x[i]*(1-x[i])
             x.append(p)
         return x
 
-    def plot(self,x, y):
-        plt.title('Map Iterations')
-        plt.xlabel('Iteration')
-        plt.ylabel('Value')
-        plt.scatter(x, y, marker='o', color='b')
-        plt.grid(True)
-        plt.show()
-
     def slicing(self,y1,k):
+        # instead of this use slicing [:-k] & [-k:]
         a=[]
         b=[]
         for i in range(len(y1)):
@@ -126,7 +119,45 @@ class Random():
             rand_num.append(x)
         return rand_num
 
-# ------------------------ Assignment 02 ----------------------
+    def correlation_test(self,k, L):
+        term1 = 0
+        for i in range(len(L)):
+            if (i+k) > len(L)-1:
+                break
+
+            term1 += L[i]*L[i+k]
+        term1 = term1/len(L)
+
+        term2 = 0
+        for i in range(len(L)):
+            term2 += L[i]
+        term2 = term2/len(L)
+        term2 = term2*term2
+
+        return term1 - term2
+
+class Plots():
+    def __init__(self):
+        pass
+
+    def plot(self,x, y,title,xlabel, ylabel):
+        plt.title(title)
+        plt.xlabel(xlabel)
+        plt.ylabel(ylabel)
+        plt.scatter(x, y, marker='o', color='b')
+        plt.grid(True)
+        plt.show()
+        plt.savefig(f"{title}.png")
+
+    def hist(self, data, title, xlabel, ylabel, bins=10):
+        plt.hist(data, bins=bins, color='b', alpha=0.7)
+        plt.title(title)
+        plt.xlabel(xlabel)
+        plt.ylabel(ylabel)
+        plt.grid(True)
+        plt.show()
+
+# ------------------------ Assignment 01.2 ----------------------
 class Pi_estimation():
     def __init__(self):
         pass
