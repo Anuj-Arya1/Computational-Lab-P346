@@ -216,20 +216,20 @@ class Gauss_Jordon_Elimination():
                 m[j][i] = A[j][i]
         for i in range(len(A)):
             m[i][len(A)] = b[i]
+        
         return m 
 
     def GJE(self,A):
         # A - agumented matrix
         n = len(A)
-        b = [row[-1] for row in A]
+        b = [i[-1] for i in A]
         p= 0
         for i in range(len(A)):
             if A[i][0]> p:
                 p = A[i][0]
                 m = i
-        for j in range(n):
-            A[m][j],A[0][j] = A[0][j],A[m][j]
-            b[m], b[0] = b[0], b[m]
+        A[m],A[0] = A[0],A[m]
+        b[m], b[0] = b[0], b[m]
         for i in range(n):
             diag = A[i][i]
             for j in range(n):
