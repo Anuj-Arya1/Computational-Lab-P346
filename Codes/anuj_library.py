@@ -234,13 +234,13 @@ class Gauss_Jordon_Elimination():
             diag = A[i][i]
             for j in range(n):
                 A[i][j] /= diag
-            b[i] /= diag
+            b[i][0] /= diag
             for k in range(n):
                 if k != i:
                     factor = A[k][i]
                     for j in range(n):
                         A[k][j] -= factor * A[i][j]
-                    b[k] -= factor * b[i] 
+                    b[k][0] -= factor * b[i][0] 
         for i in range(len(A)):
             A[i][len(A)] = b[i]
         return A    
