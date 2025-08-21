@@ -216,16 +216,15 @@ class Gauss_Jordon_Elimination():
                 m[j][i] = A[j][i]
         for i in range(len(A)):
             m[i][len(A)] = b[i]
-        
         return m 
 
     def GJE(self,A):
         # A - agumented matrix
         n = len(A)
-        b = [i[-1] for i in A]
+        b = [row[-1] for row in A]
         p= 0
         for i in range(len(A)):
-            if A[i][0]> p:
+            if abs(A[i][0])> p:
                 p = A[i][0]
                 m = i
         A[m],A[0] = A[0],A[m]
@@ -242,7 +241,104 @@ class Gauss_Jordon_Elimination():
                         A[k][j] -= factor * A[i][j]
                     b[k][0] -= factor * b[i][0] 
         for i in range(len(A)):
-            A[i][len(A)] = b[i]
+            A[i][len(A)] = b[i][0]
         return A    
 
+    # def determinant(self,A):
+    #     n = len(A)
+    #     if n==1:
+    #         return A[0][0]
+    #     elif n==2:
+    #         return A[0][0]*A[1][1] - A[0][1]*A[1][0]
+    #     elif [row[0] for row in A] == [0 for _ in range(n)]:
+    #         return 0
+    #     else:
+    #         det = 0
+    #         p=0
+    #         for i in range(len(A)):
+    #             if abs(A[i][0])> p:
+    #                 p = A[i][0]
+    #                 m = i
+    #         A[m],A[0] = A[0],A[m]
+
+    #         for i in range(n):
+    #             for j in range(i+1,n):
+    #                 if A[i][i] != 0:
+    #                     fact = A[j][i] / A[i][i]
+    #                     for k in range(n):
+    #                         A[j][k] -= fact * A[i][k]
+    #                 else:
+    #                     # If the pivot element is zero, we need to swap rows
+    #                     for k in range(j+1, n):
+    #                         if A[k][i] != 0:
+    #                             A[j], A[k] = A[k], A[j]
+    #                             break
+    #         # calculate determinant
+    #         for i in range(n):
+    #             det *= A[i][i]
+    #         return det
+
+    def inverse_matrix(self, A):
+        # Create an identity matrix
+        # if self.determinant(A) != 0:
+        n = len(A)
+        I = [[0 for i in range(n)] for j in range(n)]
+        for i in range(n):
+            I[i][i]=1
+        for k in range(n):
+            b1 = [[row[k]] for row in I]
+            A1 = self.agumented_matrix(A, b1)
+            A1 = self.GJE(A1)
+            # replace the first column of I with the last column of A1
+            for i in range(n):
+                I[i][k] = A1[i][-1]
+        return I
+        # else:
+        #     return ("Singular Matrix - cannot find inverse")
+
+# ------------------------Assign-03 ------------------------------
+
+    def LU_decomposition(self,A):
+        # Dolittle metho
+        for j in range(len(A)):
+            for i in range(1,len(A)):
+                sum1 = 0
+                sum2 = 0
+                for k in range(0,i):
+                    sum1 += A[i][k]*A[k][j]
+                if i<= j:
+                    A[i][j] = A[i][j] - sum1
+                for k in range(0,j):
+                    sum2 += A[i][k]*A[k][j]
+                if i>j:
+                    A[i][j] = (A[i][j] - sum2)/ A[j][j]
+        return A
+
+    def LU_back_frwd(self,A,b):
+        A0 = self.LU_decomposition(A)
+        L = [[0 for _ in range(len(A))]for _ in range(len(A))]
+        U = [[0 for _ in range(len(A))]for _ in range(len(A))]
+        for i in range(len(A)):
+            for j in range(len(A)):
+                if i<=j:
+                    U[i][j] = A0[i][j]
+                if i>j:
+                    L[i][j] = A0[i][j]
+        # Ly = b
+        y=[0 for i in range(len(A))]
+        y[0] = b[0][0]
+        x = [0 for _  in range(len(A))]
+        for i in range(1,len(A)):
+            sum3 = 0
+            for j in range(0,i):
+                sum3 += L[i][j]*y[j]
+            y[i] = b[i][0] - sum3
+        # Ux = y
+        x[len(A)-1] =  y[len(A)-1]/ U[len(A)-1][len(A)-1]
+        for i in range(len(A)-1,0,-1):
+            sum4 = 0
+            for j in range(i,len(A)):
+                sum4 += U[i][j]*x[j]
+            x[i] = (y[i] - sum4)/U[i][i]
+        return x
 
