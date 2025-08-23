@@ -15,8 +15,9 @@ A2 = o2.read_matrix('DATA/Assign_02/Input_files/asgn2_A2')
 b1= o2.read_matrix('DATA/Assign_02/Input_files/asgn2_mat_b2')
 A00 = o1.agumented_matrix(A2,b1)
 print(o1.GJE(A00))
-print(o1.inverse_matrix(A1))
-print(o1.determinant(A1))
+
+# print(o1.inverse_matrix(A1))
+# print(o1.determinant(A1))
 
 
 

@@ -231,6 +231,13 @@ class Gauss_Jordon_Elimination():
         b[m], b[0] = b[0], b[m]
         for i in range(n):
             diag = A[i][i]
+            if diag == 0:
+                for k in range(i+1, n):
+                    if A[k][i] != 0:
+                        A[i], A[k] = A[k], A[i]
+                        b[i], b[k] = b[k], b[i]
+                        diag = A[i][i]
+                        break
             for j in range(n):
                 A[i][j] /= diag
             b[i][0] /= diag
@@ -335,9 +342,9 @@ class Gauss_Jordon_Elimination():
             y[i] = b[i][0] - sum3
         # Ux = y
         x[len(A)-1] =  y[len(A)-1]/ U[len(A)-1][len(A)-1]
-        for i in range(len(A)-1,0,-1):
+        for i in range(len(A)-2,-1,-1):
             sum4 = 0
-            for j in range(i,len(A)):
+            for j in range(i+1,len(A)):
                 sum4 += U[i][j]*x[j]
             x[i] = (y[i] - sum4)/U[i][i]
         return x
