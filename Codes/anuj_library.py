@@ -3,6 +3,7 @@
 
 import matplotlib.pyplot as plt
 import numpy as np
+import math
 
 # ------------------- Assignment 00 ------------------------
 class Number():
@@ -286,22 +287,22 @@ class Gauss_Jordon_Elimination():
     #         return det
 
     def inverse_matrix(self, A):
-        # Create an identity matrix
-        # if self.determinant(A) != 0:
-        n = len(A)
-        I = [[0 for i in range(n)] for j in range(n)]
-        for i in range(n):
-            I[i][i]=1
-        for k in range(n):
-            b1 = [[row[k]] for row in I]
-            A1 = self.agumented_matrix(A, b1)
-            A1 = self.GJE(A1)
-            # replace the first column of I with the last column of A1
+        if self.determinant(A) != 0:
+            n = len(A)
+            # Create an identity matrix
+            I = [[0 for i in range(n)] for j in range(n)]
             for i in range(n):
-                I[i][k] = A1[i][-1]
-        return I
-        # else:
-        #     return ("Singular Matrix - cannot find inverse")
+                I[i][i]=1
+            for k in range(n):
+                b1 = [[row[k]] for row in I]
+                A1 = self.agumented_matrix(A, b1)
+                A1 = self.GJE(A1)
+                # replace the first column of I with the last column of A1
+                for i in range(n):
+                    I[i][k] = A1[i][-1]
+            return I
+        else:
+            return ("Singular Matrix - cannot find inverse")
 
 # ------------------------Assign-03 ------------------------------
 
@@ -349,3 +350,84 @@ class Gauss_Jordon_Elimination():
             x[i] = (y[i] - sum4)/U[i][i]
         return x
 
+# ---------------------- Assign-04 ------------------------------
+
+    def transpose_matrix(self,A):
+        B =  [[0 for _ in range(len(A))]for _ in range(len(A))]
+        for i in range(len(A)):
+            for j in range(len(A)):
+                B[i][j] = A[j][i]
+        return B
+
+    def choleski_decomposition(self,A):
+        n = len(A)
+        L = [[0 for _ in range(n)] for _ in range(n)]
+        for i in range(n):
+            for j in range(i+1):
+                sum1 =0
+                sum2 =0
+                if i == j:
+                    for k in range(j):
+                        sum1 += L[i][k]**2
+                    L[i][j] = (A[i][i] - sum1)**0.5
+                else:
+                    for k in range(j):
+                        sum2 += L[i][k]*L[j][k]
+                    L[i][j] = (A[i][j] - sum2) / L[j][j]
+        L_t = self.transpose_matrix(L)
+        return L,L_t
+    
+    def cholesky_forwd_back(self,L, b):
+        A0 = self.LU_decomposition(A)
+        L = [[0 for _ in range(len(A))]for _ in range(len(A))]
+        U = [[0 for _ in range(len(A))]for _ in range(len(A))]
+        for i in range(len(A)):
+            for j in range(len(A)):
+                if i<=j:
+                    U[i][j] = A0[i][j]
+                if i>j:
+                    L[i][j] = A0[i][j]
+        # Ly = b
+        y=[0 for i in range(len(A))]
+        y[0] = b[0][0]
+        x = [0 for _  in range(len(A))]
+        for i in range(1,len(A)):
+            sum3 = 0
+            for j in range(0,i):
+                sum3 += L[i][j]*y[j]
+            y[i] = b[i][0] - sum3
+        # Ux = y
+        x[len(A)-1] =  y[len(A)-1]/ U[len(A)-1][len(A)-1]
+        for i in range(len(A)-2,-1,-1):
+            sum4 = 0
+            for j in range(i+1,len(A)):
+                sum4 += U[i][j]*x[j]
+            x[i] = (y[i] - sum4)/U[i][i]
+        return x
+
+    def Jacobi_iterative(self,A,b):
+        e = 10**(-6) # precision
+        n = len(A)
+        x=[0 for _ in range(2*n)]
+        for p in range(100):
+            m = 0
+            for i in range(n):
+                sum1=0
+                for j in range(n):
+                    if i!=j:
+                        sum1 += A[i][j]*x[j]
+                x[i+n] = (b[i][0] - sum1)/ A[i][i]
+            for i in range(n):
+                x[i],x[i+n] = x[i+n],x[i]
+            for i in range(n):
+                m+=(x[i+n] - x[i])**2
+            if math.sqrt(m)<e:
+                print("No. of iterations for convergence",p)
+                break
+        return x[:n]
+    
+
+                 
+                 
+        
+        
