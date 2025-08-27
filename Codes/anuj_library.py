@@ -377,32 +377,24 @@ class Gauss_Jordon_Elimination():
         L_t = self.transpose_matrix(L)
         return L,L_t
     
-    def cholesky_forwd_back(self,L, b):
-        A0 = self.LU_decomposition(A)
-        L = [[0 for _ in range(len(A))]for _ in range(len(A))]
-        U = [[0 for _ in range(len(A))]for _ in range(len(A))]
-        for i in range(len(A)):
-            for j in range(len(A)):
-                if i<=j:
-                    U[i][j] = A0[i][j]
-                if i>j:
-                    L[i][j] = A0[i][j]
+    def cholesky_forwd_back(self,A, b):
+        L, L_t = self.choleski_decomposition(A)
         # Ly = b
         y=[0 for i in range(len(A))]
-        y[0] = b[0][0]
+        y[0] = b[0][0]/L[0][0]
         x = [0 for _  in range(len(A))]
         for i in range(1,len(A)):
             sum3 = 0
             for j in range(0,i):
                 sum3 += L[i][j]*y[j]
-            y[i] = b[i][0] - sum3
+            y[i] = (b[i][0] - sum3)/L[i][i]
         # Ux = y
-        x[len(A)-1] =  y[len(A)-1]/ U[len(A)-1][len(A)-1]
+        x[len(A)-1] =  y[len(A)-1]/ L_t[len(A)-1][len(A)-1]
         for i in range(len(A)-2,-1,-1):
             sum4 = 0
             for j in range(i+1,len(A)):
-                sum4 += U[i][j]*x[j]
-            x[i] = (y[i] - sum4)/U[i][i]
+                sum4 += L_t[i][j]*x[j]
+            x[i] = (y[i] - sum4)/L_t[i][i]
         return x
 
     def Jacobi_iterative(self,A,b):
