@@ -324,30 +324,23 @@ class Gauss_Jordon_Elimination():
 
     def LU_back_frwd(self,A,b):
         A0 = self.LU_decomposition(A)
-        L = [[0 for _ in range(len(A))]for _ in range(len(A))]
-        U = [[0 for _ in range(len(A))]for _ in range(len(A))]
-        for i in range(len(A)):
-            for j in range(len(A)):
-                if i<=j:
-                    U[i][j] = A0[i][j]
-                if i>j:
-                    L[i][j] = A0[i][j]
+        n= len(A)
         # Ly = b
-        y=[0 for i in range(len(A))]
+        y=[0 for i in range(n)]
         y[0] = b[0][0]
-        x = [0 for _  in range(len(A))]
-        for i in range(1,len(A)):
+        x = [0 for _  in range(n)]
+        for i in range(1,n):
             sum3 = 0
             for j in range(0,i):
-                sum3 += L[i][j]*y[j]
+                sum3 += A0[i][j]*y[j]
             y[i] = b[i][0] - sum3
         # Ux = y
-        x[len(A)-1] =  y[len(A)-1]/ U[len(A)-1][len(A)-1]
-        for i in range(len(A)-2,-1,-1):
+        x[n-1] =  y[n-1]/ A0[n-1][n-1]
+        for i in range(n-2,-1,-1):
             sum4 = 0
-            for j in range(i+1,len(A)):
-                sum4 += U[i][j]*x[j]
-            x[i] = (y[i] - sum4)/U[i][i]
+            for j in range(i+1,n):
+                sum4 += A0[i][j]*x[j]
+            x[i] = (y[i] - sum4)/A0[i][i]
         return x
 
 # ---------------------- Assign-04 ------------------------------
@@ -401,7 +394,7 @@ class Gauss_Jordon_Elimination():
         e = 10**(-6) # precision
         n = len(A)
         x=[0 for _ in range(2*n)]
-        for p in range(100):
+        for p in range(1000):
             m = 0
             for i in range(n):
                 sum1=0
@@ -410,16 +403,61 @@ class Gauss_Jordon_Elimination():
                         sum1 += A[i][j]*x[j]
                 x[i+n] = (b[i][0] - sum1)/ A[i][i]
             for i in range(n):
-                x[i],x[i+n] = x[i+n],x[i]
-            for i in range(n):
                 m+=(x[i+n] - x[i])**2
             if math.sqrt(m)<e:
                 print("No. of iterations for convergence",p)
                 break
-        return x[:n]
+            for i in range(n):
+                x[i],x[i+n] = x[i+n],x[i]
+        return x[n:]
     
 
-                 
-                 
+# ------------------------------------Assign_05-----------------------------------  
+
+    def symmetry_check(self,A):
+        n= len(A)
+        for i in range(n):
+            for j in range(n):
+                if A[i][j]== A[j][i]:
+                    continue
+                else:
+                    return "Matrix is not symmetric!"
+        return "Its symmetric"
+
+    def diagonally_dominant(self,A,b):
+        n = len(A)
+        for i in range(n):
+            for j in range(n):
+                m=0
+                if i!=j:
+                    m+= abs(A[i][j])
+                    if abs(A[i][i]) > m:
+                       continue
+                    else:
+                        A[i],A[j]= A[j],A[i] # swapping rows
+                        b[i],b[j]= b[j],b[i]
+        return A,b
+
+    def Gauss_seidel(self,A,b):
+        e = 10**(-6) # precision
+        n = len(A)
+        x=[0 for _ in range(n)]
+        for p in range(1000):
+            m = 0
+            for i in range(n):
+                sum1=0
+                sum2=0
+                for j in range(i):
+                    sum1 += A[i][j]*x[j]
+                for j in range(i+1,n):
+                    sum2 += A[i][j]*x[j]
+                m += (x[i]-(1/A[i][i])*(b[i][0] - sum1 - sum2))**2
+                x[i] = (1/A[i][i])*(b[i][0] - sum1 - sum2)           
+            if math.sqrt(m)<e:
+                print("No. of iterations for convergence",p)
+                break
+        return x
+    
+
         
-        
+
