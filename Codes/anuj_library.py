@@ -424,19 +424,19 @@ class Gauss_Jordon_Elimination():
                     return "Matrix is not symmetric!"
         return "Its symmetric"
 
-    def diagonally_dominant(self,A,b):
-        n = len(A)
-        for i in range(n):
-            for j in range(n):
-                m=0
-                if i!=j:
-                    m+= abs(A[i][j])
-                    if abs(A[i][i]) > m:
-                       continue
-                    else:
-                        A[i],A[j]= A[j],A[i] # swapping rows
-                        b[i],b[j]= b[j],b[i]
-        return A,b
+    # def diagonally_dominant(self,A,b):
+    #     n = len(A)
+    #     for i in range(n):
+    #         for j in range(n):
+    #             m=0
+    #             if i!=j:
+    #                 m+= abs(A[i][j])
+    #                 if abs(A[i][i]) > m:
+    #                    continue
+    #                 else:
+    #                     A[i],A[j]= A[j],A[i] # swapping rows
+    #                     b[i],b[j]= b[j],b[i]
+    #     return A,b
 
     def Gauss_seidel(self,A,b):
         e = 10**(-6) # precision
