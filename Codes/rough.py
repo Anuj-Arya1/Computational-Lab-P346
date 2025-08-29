@@ -1,13 +1,4 @@
 
-# l = [2,4,5,6,7,8,6,5,3,2,7,87]
-# print(l[4:])
-l=[]
-print(l)
-
-
-
-
-
 
 
 #  # write code for polar plot in python i have data of angles and voltage corresponding to it \
