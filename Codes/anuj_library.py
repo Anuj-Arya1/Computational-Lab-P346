@@ -458,6 +458,6 @@ class Gauss_Jordon_Elimination():
                 break
         return x
     
+# ------------------ Assign_06 ------------------------------
 
-        
 
