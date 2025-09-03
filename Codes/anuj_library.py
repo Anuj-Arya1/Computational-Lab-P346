@@ -459,5 +459,41 @@ class Gauss_Jordon_Elimination():
         return x
     
 # ------------------ Assign_06 ------------------------------
+    def bracketing(self,a,b,f):
+        step = 0.1
+        if f(a)*f(b)<0:
+            return a,b
+        if f(a)*f(b)>0:
+            if abs(f(a))<abs(f(b)):
+                #shift a
+                a = a- step*(b-a)
+                return self.bracketing(a,b,f)
+            elif abs(f(a))>abs(f(b)):
+                #shift b
+                b = b + step*(b-a)
+                return self.bracketing(a,b,f)
+    count =0
+    def bisection(self,a,b,f):
+        e = 10**(-6) #precision
+        self.count += 1
+        if abs(b-a)<e:
+            return (a+b)/2, self.count
+        else:
+            c=(a+b)/2
+            if f(c)*f(a)<0:
+                return self.bisection(a,c,f)
+            if f(c)*f(b)<0:
+                return self.bisection(c,b,f)
+            
+    def regula_falsi(self,a,b,f):
+        e=10**(-6) # precision
+        self.count += 1
+        if abs(b-a)<e:
+            return a,b,self.count
+        c = b-((b-a)*f(b))/(f(b)-f(a))
+        if f(a)*f(c)<0:
+            return self.regula_falsi(a,c,f)
+        if f(b)*f(c)<0:
+            return self.regula_falsi(c,b,f)
 
 
