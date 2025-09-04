@@ -472,7 +472,7 @@ class Gauss_Jordon_Elimination():
                 #shift b
                 b = b + step*(b-a)
                 return self.bracketing(a,b,f)
-    count =0
+    # count =0
     def bisection(self,a,b,f):
         e = 10**(-6) #precision
         self.count += 1
@@ -489,11 +489,30 @@ class Gauss_Jordon_Elimination():
         e=10**(-6) # precision
         self.count += 1
         if abs(b-a)<e:
-            return a,b,self.count
+            return a,self.count
         c = b-((b-a)*f(b))/(f(b)-f(a))
         if f(a)*f(c)<0:
             return self.regula_falsi(a,c,f)
-        if f(b)*f(c)<0:
+        elif f(b)*f(c)<0:
             return self.regula_falsi(c,b,f)
+        else:
+            return c,self.count
+    
 
-
+    def Newton_Raphson(self,x0,f,f1):
+        e= 10**(-6) # precision
+        self.count += 1
+        x = x0 - f(x0)/f1(x0) 
+        if abs(x-x0)<e:
+            return x,self.count 
+        else:
+            return self.Newton_Raphson(x,f,f1)
+    # fixed point method
+    def fixed_point(self,x0,g):
+        self.count+=1
+        e= 10**(-6)
+        x = g(x0)
+        if abs(x-x0)<e:
+            return x,self.count
+        else:
+            return self.fixed_point(x,g)
