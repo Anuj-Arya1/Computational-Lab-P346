@@ -39,12 +39,13 @@ def h(x):
     return x**2-2*x-3
 def g(x):
     return (x**2 - 3)/2
+
 # a,b = o1.bracketing(2,4,h)
 # print("Interval got after bracketing",a,b)
-# o1.count =0
-# res,cont5 = o1.fixed_point(1,g)
-# print("One of the root of the given function is ",res,"and the value of function at this is",h(res),"by fixed point method")
-# print("No. of iterations: ",cont5)
+o1.count =0
+res,cont5 = o1.fixed_point(1,g)
+print("One of the root of the given function is ",res,"and the value of function at this is",h(res),"by fixed point method")
+print("No. of iterations: ",cont5)
 
 
 #  OUTPUT
