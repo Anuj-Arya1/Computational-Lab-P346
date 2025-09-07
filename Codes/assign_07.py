@@ -6,8 +6,6 @@ import math
 
 o1 = Gauss_Jordon_Elimination()
 
-
-
 # quesntion 1
 def f(x):
     return 3*x + math.sin(x) - math.exp(x)
@@ -52,16 +50,16 @@ print("No. of iterations: ",cont5)
 #Question 01
 
 # The root of the given function is : 0.3604220151901245  and the value of function at this is  7.811408615499005e-07 by bisection method
-# No. of iterations:  23
+# No. of iterations:  22
 # The root of the given function is  0.36042170296032444 and the value of function at this is 0.0 by regula method
-# No. of iterations:  24
+# No. of iterations:  23
 # The 1st root of the given function is  0.3604217029603242 and the value of function at this is -4.440892098500626e-16
-# No. of iterations:  4
+# No. of iterations:  3
 # The 2nd root of the given function is  1.890029729252302 and the value of function at this is -1.2461143228392757e-12 by regula method
-# No. of iterations:  18
+# No. of iterations:  17
 
 #question 02
 
 # Interval got after bracketing 2 4
 # One of the root of the given function is  -1.0 and the value of function at this is 0.0 by fixed point method
-# No. of iterations:  2
+# No. of iterations:  1

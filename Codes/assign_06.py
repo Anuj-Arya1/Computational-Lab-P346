@@ -29,9 +29,9 @@ print("The value of g(x2) and g(y2) is ",g(x2),"and",g(y2),"respectively")
 # OUTPUT 
 # QUESTION-1
 # The root of the given function is : 2.6231406927108765 , and value of f(x_0) is  -7.235050047960101e-07 by bisection method
-# No. of iterations:  22
+# No. of iterations:  21
 # The root of the given function is  2.6231403354363083 and the value of function at this is 2.7755575615628914e-16 by regula method
-# No. of iterations:  10
+# No. of iterations:  9
 
 
 # QUESTION-2
