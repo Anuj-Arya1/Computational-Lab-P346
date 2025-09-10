@@ -252,39 +252,42 @@ class Gauss_Jordon_Elimination():
             A[i][len(A)] = b[i][0]
         return A    
 
-    # def determinant(self,A):
-    #     n = len(A)
-    #     if n==1:
-    #         return A[0][0]
-    #     elif n==2:
-    #         return A[0][0]*A[1][1] - A[0][1]*A[1][0]
-    #     elif [row[0] for row in A] == [0 for _ in range(n)]:
-    #         return 0
-    #     else:
-    #         det = 0
-    #         p=0
-    #         for i in range(len(A)):
-    #             if abs(A[i][0])> p:
-    #                 p = A[i][0]
-    #                 m = i
-    #         A[m],A[0] = A[0],A[m]
 
-    #         for i in range(n):
-    #             for j in range(i+1,n):
-    #                 if A[i][i] != 0:
-    #                     fact = A[j][i] / A[i][i]
-    #                     for k in range(n):
-    #                         A[j][k] -= fact * A[i][k]
-    #                 else:
-    #                     # If the pivot element is zero, we need to swap rows
-    #                     for k in range(j+1, n):
-    #                         if A[k][i] != 0:
-    #                             A[j], A[k] = A[k], A[j]
-    #                             break
-    #         # calculate determinant
-    #         for i in range(n):
-    #             det *= A[i][i]
-    #         return det
+    def determinant(self,A):
+        n = len(A)
+        if n==1:
+            return A[0][0]
+        elif n==2:
+            return A[0][0]*A[1][1] - A[0][1]*A[1][0]
+        elif [row[0] for row in A] == [0 for _ in range(n)]:
+            return 0
+        else:
+            det = 1
+            p=0
+            for i in range(len(A)):
+                if abs(A[i][0])> p:
+                    p = A[i][0]
+                    m = i
+            if m != 0:
+                A[m],A[0] = A[0],A[m]
+                det *= -1
+            for i in range(n):
+                for j in range(i+1,n):
+                    if A[i][i] != 0:
+                        fact = A[j][i] / A[i][i]
+                        for k in range(n):
+                            A[j][k] -= fact * A[i][k]
+                    else:
+                        # If the pivot element is zero, we need to swap rows
+                        for k in range(j+1, n):
+                            if A[k][i] != 0:
+                                A[j], A[k] = A[k], A[j]
+                                det *= -1
+                                break
+            # calculate determinant
+            for i in range(n):
+                det *= A[i][i]
+            return det
 
     def inverse_matrix(self, A):
         if self.determinant(A) != 0:
@@ -517,4 +520,6 @@ class Gauss_Jordon_Elimination():
             return x,(self.count-1)
         else:
             return self.fixed_point(x,g)
-        
+
+# ------------- Assign - 08 ----------------------------------
+# will write later here
