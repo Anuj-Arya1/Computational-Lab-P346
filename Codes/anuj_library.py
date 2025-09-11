@@ -287,12 +287,13 @@ class Gauss_Jordon_Elimination():
             # calculate determinant
             for i in range(n):
                 det *= A[i][i]
-            return det
+        return det
 
     def inverse_matrix(self, A):
         if self.determinant(A) != 0:
             n = len(A)
             # Create an identity matrix
+
             I = [[0 for i in range(n)] for j in range(n)]
             for i in range(n):
                 I[i][i]=1
@@ -522,4 +523,38 @@ class Gauss_Jordon_Elimination():
             return self.fixed_point(x,g)
 
 # ------------- Assign - 08 ----------------------------------
+    
+    def fixed_pt_multi_val(self,g,x):
+        e = 10**(-6)
+        x_new = g(x[0],x[1],x[2])
+
+        norm_new = math.sqrt(x_new[0]**2 + x_new[1]**2 + x_new[2]**2) 
+        norm_x = math.sqrt((x_new[0]-x[0])**2 + (x_new[1]-x[1])**2 + (x_new[2]-x[2])**2)
+        if norm_x/norm_new <e:
+            return x_new,self.count
+        else:
+            self.count+=1
+            return self.fixed_pt_multi_val(g,x_new)
+    
+    def newton_rapson_mul(self,x,jacobian,F):
+        matrix_class = Matrix_Operation()
+        gauss = Gauss_Jordon_Elimination()
+        e = 10**(-6)
+        J = jacobian(x[0],x[1],x[2])
+        f = F(x[0],x[1],x[2])
+        inv = gauss.inverse_matrix(J)  # inverse done using Gauss jordon elimination
+        list1 =  matrix_class.matrix_multiply(inv,f)
+        x_new =[0 for _ in range(3)]
+        for i in range(3):
+            x_new[i] = x[i]-list1[i][0]
+
+        norm_new = math.sqrt(x_new[0]**2 + x_new[1]**2 + x_new[2]**2)
+        norm_x = math.sqrt((x_new[0]-x[0])**2 + (x_new[1]-x[1])**2 + (x_new[2]-x[2])**2)
+        if norm_x/norm_new <e:
+            return x_new,self.count
+        else:
+            self.count +=1
+            return self.newton_rapson_mul(x_new,jacobian,F)
+
+# ------------------- Assign - 09 ----------------------------------
 # will write later here
