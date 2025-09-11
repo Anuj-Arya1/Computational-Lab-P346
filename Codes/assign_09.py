@@ -31,23 +31,24 @@ def deflation(coeff, r):
 def laguerre_single_root(b0, coeff):
     e = 1e-6
     n = len(coeff) - 1
-    for _ in range(100):  # max iterations
-        poly = Polynm(b0, coeff)
-        if abs(poly) < e:
-            return b0
-        G = Polynm(b0, deriv(coeff)) / poly
-        H = G**2 - Polynm(b0, deriv(deriv(coeff))) / poly
-        m1 = G + math.sqrt((n-1)*(n*H - G**2))
-        m2 = G - math.sqrt((n-1)*(n*H - G**2))
-        if abs(m1) > abs(m2):
-            a = n / m1
-        else:
-            a = n / m2
-        b1 = b0 - a
-        if abs(b1 - b0) < e:
-            return b1
-        b0 = b1
-    return b0  
+    poly = Polynm(b0, coeff)
+    if abs(poly) < e:
+        return b0
+    G = Polynm(b0, deriv(coeff)) / poly
+    H = G**2 - Polynm(b0, deriv(deriv(coeff))) / poly
+    m1 = G + math.sqrt((n-1)*(n*H - G**2))
+    m2 = G - math.sqrt((n-1)*(n*H - G**2))
+    if abs(m1) > abs(m2):
+        a = n / m1
+    else:
+        a = n / m2
+    b1 = b0 - a
+    if abs(b1 - b0) < e:
+        return b1
+    else:
+        return laguerre_single_root(b1,coeff)
+
+  
 
 def laguerre_algo(guess,coeff):
     roots = []
