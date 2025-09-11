@@ -557,4 +557,50 @@ class Gauss_Jordon_Elimination():
             return self.newton_rapson_mul(x_new,jacobian,F)
 
 # ------------------- Assign - 09 ----------------------------------
-# will write later here
+    def Polynm(self,x, coeff):
+        pol = 0
+        for i in range(len(coeff)):
+            pol += coeff[len(coeff)-(i+1)] * x**i
+        return pol
+
+    def deriv(self,coeff):
+        coeff_new = []
+        maxdeg = len(coeff) - 1
+        for j in range(len(coeff)-1):
+            coeff_new.append((maxdeg-j) * coeff[j])
+        return coeff_new
+
+    def deflation(self, coeff, r):
+        list1 = [coeff[0]]
+        for i in range(1, len(coeff)):
+            p = r * list1[i-1] + coeff[i]
+            list1.append(p)
+        return list1[:-1]
+
+    def laguerre_single_root(self,b0, coeff):
+        e = 1e-6
+        n = len(coeff) - 1
+        poly = self.Polynm(b0, coeff)
+        if abs(poly) < e:
+            return b0
+        G = self.Polynm(b0, self.deriv(coeff)) / poly
+        H = G**2 - self.Polynm(b0, self.deriv(self.deriv(coeff))) / poly
+        m1 = G + math.sqrt((n-1)*(n*H - G**2))
+        m2 = G - math.sqrt((n-1)*(n*H - G**2))
+        if abs(m1) > abs(m2):
+            a = n / m1
+        else:
+            a = n / m2
+        b1 = b0 - a
+        if abs(b1 - b0) < e:
+            return b1
+        else:
+            return self.laguerre_single_root(b1,coeff)
+
+    def laguerre_algo(self,guess,coeff):
+        res = []
+        for _ in range(len(coeff)-1):
+            root = self.laguerre_single_root(guess, coeff)
+            res.append(root)
+            coeff = self.deflation(coeff, root)
+        return res
