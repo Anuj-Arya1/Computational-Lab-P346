@@ -102,7 +102,6 @@ class Random():
         return x
 
     def slicing(self,y1,k):
-        # instead of this use slicing [:-k] & [-k:]
         a=[]
         b=[]
         for i in range(len(y1)):
@@ -501,6 +500,7 @@ class Gauss_Jordon_Elimination():
             return self.regula_falsi(c,b,f)
         else:
             return c,(self.count-1)
+        
 
 # ------------------ Assign-07 ----------------------
 
