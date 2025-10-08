@@ -223,8 +223,11 @@ class Gauss_Jordon_Elimination():
             if abs(A[i][0])> p:
                 p = A[i][0]
                 m = i
-        A[m],A[0] = A[0],A[m]
-        b[m], b[0] = b[0], b[m]
+        if p==0:
+            return "Singular Matrix - cannot proceed"
+        else:
+            A[m],A[0] = A[0],A[m]
+            b[m], b[0] = b[0], b[m]
         for i in range(n):
             diag = A[i][i]
             if diag == 0:
@@ -249,7 +252,7 @@ class Gauss_Jordon_Elimination():
 
 
     def determinant(self,A):
-        n = len(A)
+        n = len(A) 
         if n==1:
             return A[0][0]
         elif n==2:
@@ -262,7 +265,7 @@ class Gauss_Jordon_Elimination():
             for i in range(len(A)):
                 if abs(A[i][0])> p:
                     p = A[i][0]
-                    m = i
+                    m = i 
             if m != 0:
                 A[m],A[0] = A[0],A[m]
                 det *= -1
@@ -278,18 +281,17 @@ class Gauss_Jordon_Elimination():
                             if A[k][i] != 0:
                                 A[j], A[k] = A[k], A[j]
                                 det *= -1
-                                break
+                                break 
             # calculate determinant
-            for i in range(n):
-                det *= A[i][i]
+            for i in range(n): 
+                det *= A[i][i] 
         return det
 
     def inverse_matrix(self, A):
         if self.determinant(A) != 0:
             n = len(A)
             # Create an identity matrix
-
-            I = [[0 for i in range(n)] for j in range(n)]
+            I = [[0 for i in range(n)] for j in range(n)] 
             for i in range(n):
                 I[i][i]=1
             for k in range(n):
@@ -306,7 +308,7 @@ class Gauss_Jordon_Elimination():
 # ------------------------Assign-03 ------------------------------
 
     def LU_decomposition(self,A):
-        # Dolittle metho
+        # Dolittle method
         for j in range(len(A)):
             for i in range(1,len(A)):
                 sum1 = 0
@@ -600,3 +602,22 @@ class Gauss_Jordon_Elimination():
             res.append(root)
             coeff = self.deflation(coeff, root)
         return res
+
+    # ------------------- Assign - 10 ----------------------------------
+
+    # MIDPOINT METHOD OF INTEGRATION
+    def midpoint_integral(self,a,b,n,f):
+        #b>a
+        if n==1:
+            return (b-a)*f((b+a)/2)
+        else:
+            mid = (b+a)/2
+            return self.midpoint_integral(a,mid,n-1,f) + self.midpoint_integral(mid,b,n-1,f)
+
+    # TRAPEZOIDAL METHOD
+    def trapez_integral(self,a,b,n,f):
+        if n==1:
+            return 0.5*((f(b)+f(a)))*(b-a)
+        else:
+            mid = (b+a)/2
+            return self.trapez_integral(a,mid,n-1,f) + self.trapez_integral(mid,b,n-1,f)
