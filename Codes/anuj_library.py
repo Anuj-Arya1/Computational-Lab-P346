@@ -119,22 +119,18 @@ class Random():
             rand_num.append(x)
         return rand_num
 
-    def correlation_test(self,k, L):
-        term1 = 0
-        for i in range(len(L)):
-            if (i+k) > len(L)-1:
+    def correlation_test(self,k,x):
+        N = len(x)
+        t1 =0
+        t2 =0
+        for i in range(N):
+            if (i+k) >= N:
                 break
-
-            term1 += L[i]*L[i+k]
-        term1 = term1/len(L)
-
-        term2 = 0
-        for i in range(len(L)):
-            term2 += L[i]
-        term2 = term2/len(L)
-        term2 = term2*term2
-
-        return term1 - term2
+            t1 += x[i]*x[i+k]
+        for j in range(k,N):
+                t2 += x[j]
+        res = (t1/N) - (t2/N)**2
+        return res
 
 class Plots():
     def __init__(self):

@@ -36,3 +36,12 @@ lcg_list = obj.LCG(0.1,1103515245,12345,32768,1000)
 a1,b1 = obj.slicing(lcg_list,5)
 plot_obj.plot(a1,b1,'LCG : X_{i} vs X_{i+5}','X_i','X_{i+5}')
 print('The correlation test score for LCG is:',obj.correlation_test(5,lcg_list))
+
+
+#OUTPUT
+# The correlation test score for first set of paramters is: -0.00838176303550453
+# The correlation test score for second set of paramters is: 0.0013580370157126875
+# The correlation test score for third set of paramters is: 0.0014377386744393594
+# The correlation test score for fourth set of paramters is: 0.008485705008538347
+# The correlation test score for fifth set of paramters is: 0.007126465931154791
+# The correlation test score for LCG is: 1738712.3268877566
