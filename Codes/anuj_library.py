@@ -624,3 +624,36 @@ class Gauss_Jordon_Elimination():
             y = a + i * h
             Area += (h/2) * (f(x) + f(y))
         return Area
+    
+# -----------------Assignment- 11 ----------------------------
+
+    # SIMPSON'S 1/3 RULE
+    def simpson(self,a,b,n,f):
+        h = (b-a)/n
+        sum = 0
+        for i in range(1,n):
+            xi = a + i*h
+            if i%2 == 1:
+                sum += 4*f(xi)
+            elif i%2 ==0:
+                sum += 2*f(xi)
+        sum += f(a) + f(b)
+        return (h/3)*sum 
+    
+    # MONTE CARLO INTEGRATION
+    def Monte_carlo(self,a,b,n,f):
+        o2 = Random()
+        o3 = Plots()
+        fn = []
+        xa = []
+        for i in range(1,n):
+            X = o2.LCG(0.4,1103515245,12345,32768,i*100)
+            xa.append(i*1000)
+            sum=0
+            for i in range(len(X)):
+                X[i] = a+(b-a)*(X[i]/32768)
+                sum += f(X[i])
+            F_n = (1/(len(X)))*(b-a)*sum
+            fn.append(F_n)
+        o3.line_plot(xa,fn,"F_N vs N","N","F_N")
+        return fn[len(fn)-1]
