@@ -604,26 +604,21 @@ class Gauss_Jordon_Elimination():
         return res
 
     # ------------------- Assign - 10 ----------------------------------
-
+class Integration():
     # MIDPOINT METHOD OF INTEGRATION
-    def midpoint_integral(self,a,b,n,f):
+    def midpoint_integral(self,a,b,h,f):
         #b>a
-        h = (b-a)/n
-        Area = 0
-        for i in range(1,n+1):
-            mid_point = ((a + (i-1) * h) + (a + i * h)) / 2
-            Area += f(mid_point) * h
-        return Area
+        if abs(b-a-h) <= 10**(-6) :
+            return h*f(a+h/2.0)
+        else:
+            return h*f(a+h/2.0)+self.midpoint_integral(a+h,b,h,f)
 
     # TRAPEZOIDAL METHOD
-    def trapez_integral(self,a,b,n,f):
-        h = (b-a)/n
-        Area = 0
-        for i in range(1,n+1):
-            x = a + (i-1) * h
-            y = a + i * h
-            Area += (h/2) * (f(x) + f(y))
-        return Area
+    def trapez_integral(self,a,b,h,f):
+        if abs(b-a-h) <= 10**(-6):
+            return (h/2.0)*(f(a)+f(b))
+        else: 
+            return (h/2.0)*(f(a)+f(a+h))+self.trapez_integral(a+h,b,h,f)
     
 # -----------------Assignment- 11 ----------------------------
 
