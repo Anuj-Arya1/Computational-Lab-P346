@@ -211,80 +211,52 @@ class Gauss_Jordon_Elimination():
             for j in range(len(A)):
                 m[j][i] = A[j][i]
         for i in range(len(A)):
-            m[i][len(A)] = b[i]
+            m[i][len(A)] = b[i][0]
         return m 
 
-    def GJE(self,A):
-        # A - agumented matrix
+    def GJE(self, A):
         n = len(A)
-        b = [row[-1] for row in A]
-        p= 0
-        for i in range(len(A)):
-            if abs(A[i][0])> p:
-                p = A[i][0]
-                m = i
-        if p==0:
-            return "Singular Matrix - cannot proceed"
-        else:
-            A[m],A[0] = A[0],A[m]
-            b[m], b[0] = b[0], b[m]
         for i in range(n):
-            diag = A[i][i]
-            if diag == 0:
-                for k in range(i+1, n):
-                    if A[k][i] != 0:
-                        A[i], A[k] = A[k], A[i]
-                        b[i], b[k] = b[k], b[i]
-                        diag = A[i][i]
-                        break
-            for j in range(n):
-                A[i][j] /= diag
-            b[i][0] /= diag
+            p = i
+            for k in range(i + 1, n):
+                if abs(A[k][i]) > abs(A[p][i]):
+                    p = k
+            if A[p][i] == 0:
+                return "Singular Matrix - cannot proceed"
+            A[i], A[p] = A[p], A[i]
+
+            pivot = A[i][i]
+            for j in range(i, len(A[0])):  
+                A[i][j] /= pivot
+
             for k in range(n):
                 if k != i:
                     factor = A[k][i]
-                    for j in range(n):
+                    for j in range(i, len(A[0])):
                         A[k][j] -= factor * A[i][j]
-                    b[k][0] -= factor * b[i][0] 
-        for i in range(len(A)):
-            A[i][len(A)] = b[i][0]
-        return A    
 
-
+        return A
     def determinant(self,A):
-        n = len(A) 
-        if n==1:
-            return A[0][0]
-        elif n==2:
-            return A[0][0]*A[1][1] - A[0][1]*A[1][0]
-        elif [row[0] for row in A] == [0 for _ in range(n)]:
-            return 0
-        else:
-            det = 1
-            p=0
-            for i in range(len(A)):
-                if abs(A[i][0])> p:
-                    p = A[i][0]
-                    m = i 
-            if m != 0:
-                A[m],A[0] = A[0],A[m]
+        n = len(A)
+        det = 1
+        for i in range(n):
+            p = i
+            for k in range(i + 1, n):
+                if abs(A[k][i]) > abs(A[p][i]):
+                    p = k
+            if A[p][i] == 0:
+                return 0  # Singular matrix
+            if p != i:
+                A[i], A[p] = A[p], A[i]
                 det *= -1
-            for i in range(n):
-                for j in range(i+1,n):
-                    if A[i][i] != 0:
-                        fact = A[j][i] / A[i][i]
-                        for k in range(n):
-                            A[j][k] -= fact * A[i][k]
-                    else:
-                        # If the pivot element is zero, we need to swap rows
-                        for k in range(j+1, n):
-                            if A[k][i] != 0:
-                                A[j], A[k] = A[k], A[j]
-                                det *= -1
-                                break 
-            # calculate determinant
-            for i in range(n): 
-                det *= A[i][i] 
+
+            for j in range(i + 1, n):
+                factor = A[j][i] / A[i][i]
+                for k in range(i, n):
+                    A[j][k] -= factor * A[i][k]
+
+        for i in range(n):
+            det *= A[i][i]
         return det
 
     def inverse_matrix(self, A):
@@ -309,6 +281,8 @@ class Gauss_Jordon_Elimination():
 
     def LU_decomposition(self,A):
         # Dolittle method
+        for j in range(1,len(A)):
+            A[j][0] = A[j][0] / A[0][0]
         for j in range(len(A)):
             for i in range(1,len(A)):
                 sum1 = 0
@@ -424,20 +398,6 @@ class Gauss_Jordon_Elimination():
                 else:
                     return "Matrix is not symmetric!"
         return "Its symmetric"
-
-    # def diagonally_dominant(self,A,b):
-    #     n = len(A)
-    #     for i in range(n):
-    #         for j in range(n):
-    #             m=0
-    #             if i!=j:
-    #                 m+= abs(A[i][j])
-    #                 if abs(A[i][i]) > m:
-    #                    continue
-    #                 else:
-    #                     A[i],A[j]= A[j],A[i] # swapping rows
-    #                     b[i],b[j]= b[j],b[i]
-    #     return A,b
 
     def Gauss_seidel(self,A,b):
         e = 10**(-6) # precision
