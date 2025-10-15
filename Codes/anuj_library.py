@@ -206,6 +206,7 @@ class Gauss_Jordon_Elimination():
         pass
 
     def agumented_matrix(self,A,b):
+        # input b as [[a],[b],[c],[d]]
         m = [[0 for i in range(len(A)+1)] for j in range(len(A))]
         for i in range(len(A)):
             for j in range(len(A)):
@@ -224,7 +225,7 @@ class Gauss_Jordon_Elimination():
             if A[p][i] == 0:
                 return "Singular Matrix - cannot proceed"
             A[i], A[p] = A[p], A[i]
-
+            
             pivot = A[i][i]
             for j in range(i, len(A[0])):  
                 A[i][j] /= pivot
@@ -234,8 +235,8 @@ class Gauss_Jordon_Elimination():
                     factor = A[k][i]
                     for j in range(i, len(A[0])):
                         A[k][j] -= factor * A[i][j]
-
         return A
+    
     def determinant(self,A):
         n = len(A)
         det = 1
@@ -307,7 +308,7 @@ class Gauss_Jordon_Elimination():
         for i in range(1,n):
             sum3 = 0
             for j in range(0,i):
-                sum3 += A0[i][j]*y[j]
+                sum3 += A0[i][j]*y[j]            
             y[i] = b[i][0] - sum3
         # Ux = y
         x[n-1] =  y[n-1]/ A0[n-1][n-1]
@@ -603,7 +604,7 @@ class Integration():
         xa = []
         for i in range(1,n):
             X = o2.LCG(0.4,1103515245,12345,32768,i*100)
-            xa.append(i*1000)
+            xa.append(i*100)
             sum=0
             for i in range(len(X)):
                 X[i] = a+(b-a)*(X[i]/32768)
