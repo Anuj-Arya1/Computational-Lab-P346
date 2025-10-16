@@ -58,12 +58,12 @@ def f1(x):
 
 o1.count =0
 x,county = o1.Newton_Raphson(6,f,f1)
-# print(x) # value of x
+print("The value of x comes out to be :",x) # value of x
 h = 6.626e-34
 k= 1.381e-23
 c=3e8
 
-# print("Wein's constant (b) is :", (h*c)/(k*x)) #b = hc/kx
+print("Wein's constant (b) is :", (h*c)/(k*x)) #b = hc/kx
 
 # Wein's constant (b) is : 0.0028990103307379917
 
@@ -76,8 +76,13 @@ C = o2.read_matrix('DATA/MIDEXAM/ms_A_matrix')
 D = o2.read_matrix('DATA/MIDEXAM/ms_A_matrix')
 E = o2.read_matrix('DATA/MIDEXAM/ms_A_matrix')
 
+
+
 n=len(A)
-det = o1.determinant(A) # det non-zero
+# det = o1.determinant(A)  
+# det = 68.71679999999995 which is non-zero
+
+
 def round0(list,place):
     for i in range(5):
         list[i] = round(list[i],place)
@@ -93,18 +98,19 @@ row4 = o1.LU_back_frwd(D,[[0],[0],[0],[1],[0]])
 I.append(round0(row4,3))
 row5 = o1.LU_back_frwd(E,[[0],[0],[0],[0],[1]])
 I.append(round0(row5,3))
-print((I)) # inverse 
+print((o1.transpose_matrix(I))) # inverse
 
 # OUTPUT
-# [[0.333, -0.0, 0.0, 0.0, 0.0], [0.455, 0.24, 0.373, -0.03, -2.591], [0.437, 0.212, 0.294, 0.227, -2.406], [0.174, 0.031, 0.054, -0.103, -0.593], [-0.701, -0.186, -0.302, 0.296, 3.796]]
-
+# [[-0.708, 2.531, 2.431, 0.967, -3.902], [-0.193, 0.31, 0.279, 0.058, -0.294], 
+# [0.022, 0.365, 0.286, 0.051, -0.29], [0.273, -0.13, 0.132, -0.141, 0.449], 
+# [0.782, -2.875, -2.679, -0.701, 4.234]]
 
 
 # Question 4
 A0 = o2.read_matrix('DATA/MIDEXAM/msem_gs')
 b0 = o2.read_matrix('DATA/MIDEXAM/msem_bvec')
 
-# print(o1.Gauss_seidel(A0,b0))
+print(o1.Gauss_seidel(A0,b0))
 
 #OUTPUT
 # No. of iterations for convergence 12
