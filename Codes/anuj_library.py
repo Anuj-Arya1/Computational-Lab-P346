@@ -284,7 +284,7 @@ class Gauss_Jordon_Elimination():
         # Dolittle method
         for j in range(1,len(A)):
             A[j][0] = A[j][0] / A[0][0]
-        for j in range(len(A)):
+        for j in range(1,len(A)):
             for i in range(1,len(A)):
                 sum1 = 0
                 sum2 = 0
@@ -613,3 +613,14 @@ class Integration():
             fn.append(F_n)
         o3.line_plot(xa,fn,"F_N vs N","N","F_N")
         return fn[len(fn)-1]
+    
+    def Gaussian_quadrature(self,f,a,b,true_val,tor):
+        for n in range(1,1000):
+            intg = 0 
+            roots, weights = np.polynomial.legendre.leggauss(n)
+            new_roots = 0.5 *(b-a)*roots + 0.5*(b+a)
+            new_weights = 0.5*(b-a)*weights
+            for i in range(n):
+                intg += new_weights[i]*f(new_roots[i])
+            if abs(true_val - intg) <tor:
+                return intg , n
