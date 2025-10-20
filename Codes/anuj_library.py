@@ -239,6 +239,7 @@ class Gauss_Jordon_Elimination():
     
     def determinant(self,A):
         n = len(A)
+        A = [row[:] for row in A] 
         det = 1
         for i in range(n):
             p = i
@@ -282,6 +283,7 @@ class Gauss_Jordon_Elimination():
 
     def LU_decomposition(self,A):
         # Dolittle method
+        A = [row[:] for row in A]
         for j in range(1,len(A)):
             A[j][0] = A[j][0] / A[0][0]
         for j in range(1,len(A)):
@@ -300,6 +302,7 @@ class Gauss_Jordon_Elimination():
 
     def LU_back_frwd(self,A,b):
         A0 = self.LU_decomposition(A)
+        A = [row[:] for row in A0]
         n= len(A)
         # Ly = b
         y=[0 for i in range(n)]

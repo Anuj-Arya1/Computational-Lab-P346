@@ -25,7 +25,7 @@ def points_inside_ellipse(x,y):
 
 def ellipse_area(total_pt):
     x = o3.LCG(0.1,1103515245,12345,32768,total_pt)
-    y = o3.LCG(0.4,1103515245,12345,32768,total_pt)
+    y = o3.LCG(0.345,1103515245,12345,32768,total_pt)
     for i in range(len(x)):
         x[i] = x[i]/16384
     for i in range(len(y)):
@@ -39,13 +39,17 @@ def ellipse_area(total_pt):
         if ((x[i]**2)/4 +y[i]**2) >= 1:
             lx_out.append(x[i])
             ly_out.append(y[i])
-    plt.scatter(lx_in,ly_in,color ='r')
-    plt.scatter(lx_out,ly_out,color='b')
+
+    x = np.linspace(0, 2, 1000)
+    y = np.sqrt(1 - (x**2)/4)
+    plt.plot(x, y, color='black')
+    plt.scatter(lx_in,ly_in,color ='r',s=1)
+    plt.scatter(lx_out,ly_out,color='b',s=1)
     plt.show()
     return Area,percentage
 
 
-# print(ellipse_area(100000))
+print(ellipse_area(10000))
 
 # (6.28352, -0.05257342529109105 %)
 
@@ -71,34 +75,21 @@ print("Wein's constant (b) is :", (h*c)/(k*x)) #b = hc/kx
 # Question 3
 
 A = o2.read_matrix('DATA/MIDEXAM/ms_A_matrix')
-B = o2.read_matrix('DATA/MIDEXAM/ms_A_matrix')
-C = o2.read_matrix('DATA/MIDEXAM/ms_A_matrix')
-D = o2.read_matrix('DATA/MIDEXAM/ms_A_matrix')
-E = o2.read_matrix('DATA/MIDEXAM/ms_A_matrix')
-
-
-
-n=len(A)
-# det = o1.determinant(A)  
-# det = 68.71679999999995 which is non-zero
-
 
 def round0(list,place):
-    for i in range(5):
-        list[i] = round(list[i],place)
-    return list
-I = [] 
-row1 = o1.LU_back_frwd(A,[[1],[0],[0],[0],[0]])
-I.append(round0(row1,3))
-row2 = o1.LU_back_frwd(B,[[0],[1],[0],[0],[0]])
-I.append(round0(row2,3))
-row3 = o1.LU_back_frwd(C,[[0],[0],[1],[0],[0]])
-I.append(round0(row3,3))
-row4 = o1.LU_back_frwd(D,[[0],[0],[0],[1],[0]])
-I.append(round0(row4,3))
-row5 = o1.LU_back_frwd(E,[[0],[0],[0],[0],[1]])
-I.append(round0(row5,3))
-print((o1.transpose_matrix(I))) # inverse
+        for i in range(5):
+            list[i] = round(list[i],place)
+        return list
+
+if o1.determinant(A) != 0:
+    I = [[[0] for _ in range(len(A))]for _ in range(len(A))]
+    for i in range(len(A)):
+        I[i][i] = [1]
+    for row in I:
+        m = round0(o1.LU_back_frwd(A,row),3)
+        I[I.index(row)] = m
+
+    print((o1.transpose_matrix(I))) # inverse
 
 # OUTPUT
 # [[-0.708, 2.531, 2.431, 0.967, -3.902], [-0.193, 0.31, 0.279, 0.058, -0.294], 
