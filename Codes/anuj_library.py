@@ -616,7 +616,9 @@ class Integration():
             fn.append(F_n)
         o3.line_plot(xa,fn,"F_N vs N","N","F_N")
         return fn[len(fn)-1]
-    
+
+# --------------------------Assign -12 -----------------------------------
+
     def Gaussian_quadrature(self,f,a,b,true_val,tor):
         for n in range(1,1000):
             intg = 0 
@@ -627,3 +629,30 @@ class Integration():
                 intg += new_weights[i]*f(new_roots[i])
             if abs(true_val - intg) <tor:
                 return intg , n
+
+# -----------------Assignment- 13 ----------------------------
+
+class Differential_equation():
+    def forward_euler(self,L_x,L_y,f,y0,x0,xf,h):
+        L_y.append(y0)
+        L_x.append(x0)
+        x1 = x0 + h
+        y1 = y0 + h*f(x0,y0)
+        print()
+        if x1>=xf - 10**(-6):
+            L_x.append(x1),L_y.append(y1)
+            return L_x,L_y
+        else:
+            return self.forward_euler(L_x,L_y,f,y1,x1,xf,h)
+
+    def Predic_Corr_method(self,L_x,L_y,f,y0,x0,xf,h):
+        L_x.append(x0),L_y.append(y0)
+        K1 = h*f(x0,y0)
+        x1 = x0+h
+        K2 = h*f(x1,y0 + K1) 
+        y1 = y0 + (K1+K2)/2
+        if x1>=xf - 10**(-6):
+            L_x.append(x1),L_y.append(y1)
+            return L_x,L_y
+        else: 
+            return self.Predic_Corr_method(L_x,L_y,f,y1,x1,xf,h)
