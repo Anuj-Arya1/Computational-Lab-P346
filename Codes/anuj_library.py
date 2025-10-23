@@ -638,7 +638,6 @@ class Differential_equation():
         L_x.append(x0)
         x1 = x0 + h
         y1 = y0 + h*f(x0,y0)
-        print()
         if x1>=xf - 10**(-6):
             L_x.append(x1),L_y.append(y1)
             return L_x,L_y
@@ -656,3 +655,7 @@ class Differential_equation():
             return L_x,L_y
         else: 
             return self.Predic_Corr_method(L_x,L_y,f,y1,x1,xf,h)
+
+# -------------- Assign 14 -------------------------
+
+# update later
