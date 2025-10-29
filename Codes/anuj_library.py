@@ -658,4 +658,41 @@ class Differential_equation():
 
 # -------------- Assign 14 -------------------------
 
-# update later
+    def RK4(self,x0,y0,xf,f,h):
+        L_x = [x0]
+        L_y = [y0]
+        while x0 <= xf:
+            x1 = x0+h
+            k1 = h*f(x0,y0)
+            k2 = h*f(x0+h/2,y0+k1/2)
+            k3 = h*f(x0+h/2,y0+k2/2)
+            k4 = h*f(x1,y0+k3)
+            y1 = y0+(k1+2*k2+2*k3+k4)/6
+            L_x.append(x1),L_y.append(y1)
+            x0,y0 = x1,y1
+        return L_x,L_y
+
+    def RK4_DSHO(self,x,v,t,tf,h,f_x,f_v):
+        L_X = [x]
+        L_t = [t]
+        L_v = [v]
+        while t <= tf:
+            k1x = h*f_x(x,v,t)
+            k1v = h*f_v(x,v,t)
+            
+            k2x = h*f_x(x+k1x/2,v+k1v/2,t+h/2)
+            k2v = h*f_v(x+k1x/2,v+k1v/2,t+h/2)
+
+            k3x = h*f_x(x+k2x/2,v+k2v/2,t+h/2)
+            k3v = h*f_v(x+k2x/2,v+k2v/2,t+h/2)
+
+            k4x = h*f_x(x+k3x,v+k3v,t+h)
+            k4v = h*f_v(x+k3x,v+k3v,t+h)
+
+            x = x + (k1x + 2*k2x + 2*k3x + k4x)/6
+            v = v + (k1v + 2*k2v + 2*k3v + k4v)/6
+            t = t + h
+            L_t.append(t),L_v.append(v),L_X.append(x)
+        return L_t,L_X,L_v
+    
+# -----------------Assign_15.py ----------------------------

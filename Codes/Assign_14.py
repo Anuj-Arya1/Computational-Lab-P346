@@ -33,9 +33,18 @@ plt.grid()
 plt.show()
 
 # Question 2
+def f_x(x,v,t):
+    return v
 
-t,x,v,E = o1.RK4_DSHO(1,0,0,40,0.1,1,1,0.15)
+def f_v(x,v,t):
+    k = 1.0
+    m = 1.0
+    mu = 0.15
+    w = 1
+    return -mu*v - (w**2)*x
 
+t,x,v = o1.RK4_DSHO(1,0,0,40,0.1,f_x,f_v)
+E = [0.5*(1*v[i]**2 + 1*x[i]**2) for i in range(len(x))]
 #PLOTS
 plt.scatter(t,x,s=2,color = 'red',marker = 'o')
 plt.plot(t,x,label='x vs t curve',color= 'black')
