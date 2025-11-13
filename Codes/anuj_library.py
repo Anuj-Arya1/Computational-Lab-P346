@@ -696,3 +696,41 @@ class Differential_equation():
         return L_t,L_X,L_v
     
 # -----------------Assign_15.py ----------------------------
+    def BVP(self,x,gh,gl,t,tf,f_x,f_v):
+        x1,T1,z1 = self.RK4_DSHO(x,gh,t,tf,0.1,f_x,f_v)
+        x2,T2,z2 = self.RK4_DSHO(x,gl,t,tf,0.1,f_x,f_v)
+        g = gl + (((gh - gl)*(200 - T2[-1]))/(T1[-1] - T2[-1]))
+        x3,T3,z3 = self.RK4_DSHO(x,g,t,tf,0.1,f_x,f_v)
+        return x1,T1,z1,x2,T2,z2,x3,T3,z3
+        
+
+
+# ----------------Assign-16.py ----------------------------
+
+class Fitting_data():
+    def lagrange_interpolation(self,lx, ly, x):
+        n = len(lx)
+        P = 0
+        for i in range(n):
+            c=1
+            for k in range(n):
+                if k != i:
+                    c *= ((x-lx[k])/(lx[i]-lx[k]))
+            P+=c*ly[i]
+        return P
+    
+    def linear_reg_params(self,Lx,Ly,sigma_i):
+        n = len(Lx)
+        S,Sx,Sy,Sxx,Sxy,Syy = 0,0,0,0,0,0
+        for i in range(n):
+            S += 1/sigma_i[i]
+            Sx += Lx[i]/sigma_i[i]
+            Sy += Ly[i]/sigma_i[i]
+            Sxx += (Lx[i]*Lx[i])/sigma_i[i]
+            Sxy += (Lx[i]*Ly[i])/sigma_i[i]
+            Syy += (Ly[i]*Ly[i])/sigma_i[i]
+        delta = S*Sxx - Sx*Sx
+        r2 = (Sxy)**2/(Sxx*Syy)
+        a = (Sxx*Sy - Sx*Sxy)/delta
+        b = (S*Sxy - Sx*Sy)/delta
+        return a,b,r2

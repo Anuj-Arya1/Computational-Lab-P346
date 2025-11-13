@@ -17,13 +17,8 @@ def f_v(x,v,t):
     T_a = 20
     return -a*(T_a-x)
 
-def BVP(x,gh,gl,t,tf,f_x,f_v):
-    x1,T1,z1 = o1.RK4_DSHO(x,gh,t,tf,0.1,f_x,f_v)
-    x2,T2,z2 = o1.RK4_DSHO(x,gl,t,tf,0.1,f_x,f_v)
-    g = gl + (((gh - gl)*(200 - T2[-1]))/(T1[-1] - T2[-1]))
-    x3,T3,z3 = o1.RK4_DSHO(x,g,t,tf,0.1,f_x,f_v)
-    return x1,T1,z1,x2,T2,z2,x3,T3,z3
-a,b,c,d,e,f,g,h,i = BVP(40,10,20,0,10,f_x,f_v)
+
+a,b,c,d,e,f,g,h,i = o1.BVP(40,10,20,0,10,f_x,f_v)
 
 # x at which T = 100
 for i in range(len(h)-1):
