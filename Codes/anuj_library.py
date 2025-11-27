@@ -197,7 +197,7 @@ class Pi_estimation():
         y=[]
         for i in range(len(x)):
             y.append(-np.log(x[i]))
-        return y
+        return y 
 
 # ------------------------- Assignment 02 --------------------------------------
 
@@ -239,7 +239,7 @@ class Gauss_Jordon_Elimination():
     
     def determinant(self,A):
         n = len(A)
-        A = [row[:] for row in A] 
+        A = [row[:] for row in A]  # making a copy to avoid modifying the original matrix
         det = 1
         for i in range(n):
             p = i
@@ -283,7 +283,7 @@ class Gauss_Jordon_Elimination():
 
     def LU_decomposition(self,A):
         # Dolittle method
-        A = [row[:] for row in A]
+        A = [row[:] for row in A] # copy origional matrix 
         for j in range(1,len(A)):
             A[j][0] = A[j][0] / A[0][0]
         for j in range(1,len(A)):
@@ -445,6 +445,8 @@ class Gauss_Jordon_Elimination():
             return (a+b)/2, (self.count-1)
         else:
             c=(a+b)/2
+            if abs(f(c))<e:
+                return c, (self.count-1)
             if f(c)*f(a)<0:
                 return self.bisection(a,c,f)
             if f(c)*f(b)<0:
@@ -630,6 +632,7 @@ class Integration():
             if abs(true_val - intg) <tor:
                 return intg , n
 
+
 # -----------------Assignment- 13 ----------------------------
 
 class Differential_equation():
@@ -669,7 +672,7 @@ class Differential_equation():
             k4 = h*f(x1,y0+k3)
             y1 = y0+(k1+2*k2+2*k3+k4)/6
             L_x.append(x1),L_y.append(y1)
-            x0,y0 = x1,y1
+            x0,y0 = x1,y1 
         return L_x,L_y
 
     def RK4_DSHO(self,x,v,t,tf,h,f_x,f_v):
@@ -696,10 +699,10 @@ class Differential_equation():
         return L_t,L_X,L_v
     
 # -----------------Assign_15.py ----------------------------
-    def BVP(self,x,gh,gl,t,tf,f_x,f_v):
+    def BVP(self,x,final,gh,gl,t,tf,f_x,f_v):
         x1,T1,z1 = self.RK4_DSHO(x,gh,t,tf,0.1,f_x,f_v)
         x2,T2,z2 = self.RK4_DSHO(x,gl,t,tf,0.1,f_x,f_v)
-        g = gl + (((gh - gl)*(200 - T2[-1]))/(T1[-1] - T2[-1]))
+        g = gl + (((gh - gl)*(final - T2[-1]))/(T1[-1] - T2[-1]))
         x3,T3,z3 = self.RK4_DSHO(x,g,t,tf,0.1,f_x,f_v)
         return x1,T1,z1,x2,T2,z2,x3,T3,z3
         
@@ -719,6 +722,10 @@ class Fitting_data():
             P+=c*ly[i]
         return P
     
+    def lagrange_polynomial(self,lx, ly):
+      lag_func = lambda x: self.lagrange_interpolation(lx, ly, x)
+      return lag_func
+    
     def linear_reg_params(self,Lx,Ly,sigma_i):
         n = len(Lx)
         S,Sx,Sy,Sxx,Sxy,Syy = 0,0,0,0,0,0
@@ -733,4 +740,97 @@ class Fitting_data():
         r2 = (Sxy)**2/(Sxx*Syy)
         a = (Sxx*Sy - Sx*Sxy)/delta
         b = (S*Sxy - Sx*Sy)/delta
+        err_a = (Sxx/delta)**0.5
+        err_b = (S/delta)**0.5
         return a,b,r2
+    
+# -------------------- Endsem -------------------------------
+
+    def poly_fit(self,x, y, deg):
+        A = [[0 for j in range(deg+1)] for i in range(deg+1)]
+        B = [0 for i in range(deg+1)]
+        for i in range(deg+1):
+            for k in range(deg+1):
+                p=0
+                for j in range(len(x)):
+                    p += (x[j])**(i+k)
+                A[i][k] = p
+            q=0
+            for j in range(len(x)):
+                q += y[j]*(x[j])**i
+            B[i] = q
+        a = Gauss_Jordon_Elimination().agumented_matrix(A, [[val] for val in B])
+        a = Gauss_Jordon_Elimination().GJE(a)
+        a = [a[i][deg+1] for i in range(deg+1)]
+        return a 
+
+    def gauss_hermit(self,f,n):
+        new_func = lambda x: f(x)*np.exp(x**2)
+        h = np.polynomial.hermite.hermgauss(n)
+        roots,weights = h[0], h[1]
+        integral = 0
+        for i in range(n):
+            integral += weights[i]*new_func(roots[i])
+        return integral
+
+    def gauss_laguerre(self,f,n):    
+        new_func = lambda x: f(x)*np.exp(x)
+        L = np.polynomial.laguerre.laggauss(n)
+        roots, weights = L[0], L[1]
+        integral = 0
+        for i in range(n):
+            integral += weights[i]*new_func(roots[i])
+        return integral
+    
+    
+    def heat_eqn(self,nt,nx,x0,X,t0,T,Yx0):
+        # X is length of rod
+        dx = (X-x0)/(nx-1)
+        dt = (T-t0)/(nt-1)
+        a= dt/(dx)**2
+        V0 = []
+        T0 = []
+        X0 = []
+        for i in range(nx):
+            X0.append(x0 + i*dx)
+        for t in range(nt):
+            T0.append(t0 + t*dt)
+        for i in range(nx):
+            V0.append([Yx0(x0+i*dx)])
+        A = [[0 for i in range(nx)] for i in range(nx)]  # A = nx x nx matrix
+        res = [V0]
+        for i in range(nx):
+            for j in range(nx):
+                if  i==j :
+                    A[i][j] = 1 - 2*a
+                if i == j-1 or i == j+1:
+                    A[i][j] = a
+        for k in range(0,nt):
+            rr = Matrix_Operation().matrix_multiply(A,res[k])
+            res.append(rr)
+        return res, T0, X0
+
+    def RK4_new(self,F, t0, ly0, t_end, h):
+        t = t0
+        y = np.array(ly0, dtype=float)
+
+        t_values = [t0]
+        y_values = [y.copy()]
+
+        while t < t_end:
+            h_f = min(h, t_end - t)
+            k1 = h_f * F(t, y)
+            k2 = h_f * F(t + h_f / 2, y + k1 / 2)
+            k3 = h_f * F(t + h_f / 2, y + k2 / 2)
+            k4 = h_f * F(t + h_f, y + k3)
+
+            y = y + (k1 + 2 * k2 + 2 * k3 + k4) / 6.0
+            t = t + h_f
+
+            t_values.append(t)
+            y_values.append(y.copy())
+
+            if h_f != h:
+                break
+
+        return np.array(t_values), np.array(y_values)
