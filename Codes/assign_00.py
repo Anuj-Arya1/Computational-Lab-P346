@@ -12,7 +12,6 @@ A = c3.read_matrix("asgn0_matA")
 B = c3.read_matrix("asgn0_matB")
 C = c3.read_matrix("asgn0_vecC")
 D = c3.read_matrix("asgn0_vecD")
-
 print("Sum of first 20 odd numbers")
 print(c1.sum_of_odd_numbers(20),"\n")
 print("Factorial of 8")

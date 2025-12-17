@@ -18,7 +18,7 @@ def f_v(x,v,t):
     return -a*(T_a-x)
 
 
-a,b,c,d,e,f,g,h,i = o1.BVP(40,10,20,0,10,f_x,f_v)
+a,b,c,d,e,f,g,h,i = o1.BVP(40,200,10,20,0,10,f_x,f_v)
 
 # x at which T = 100
 for i in range(len(h)-1):
@@ -76,7 +76,7 @@ def heat_eqn(nt,nx,x0,X,t0,T):
         res.append(rr)
     return res, T0, X0
 
-# PLOTS
+# PLOTS 
 result, T0, X0 = heat_eqn(2000,21,0,2,0,2)
 time_int = [0,20,50,100,500,1000,1999]
 for i in time_int:
